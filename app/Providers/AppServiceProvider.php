@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Channel;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+//        if ($this->app->isLocal()){
+//            $this->app->register(  Barryvdh\Debugbar\LaravelDebugbar::class);
+//        }
     }
 
     /**
@@ -25,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         \view()->share('channels',Channel::all());
-      
+        Paginator::useBootstrap();
+
     }
 }

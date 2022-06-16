@@ -19,34 +19,47 @@
 
 
                 </div>
+
             </div>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="offset-2 col-md-8 mt-2">
-            @foreach($post->replies as $reply)
+            @foreach($replies as $reply)
                 @include('posts/reply')
             @endforeach
-        </div>
-    </div>
-    @if (auth()->check())
 
 
-    <div class="row justify-content-center">
-        <div class="offset-2 col-md-8 mt-2">
+            @if (auth()->check())
+
+
+
                 <form method="post" action="{{route('add.reply',[$post->channel->slug,$post->id])}}">
                     @csrf
                     <div class="form-group">
-                    <textarea name="body" id="body" class="form-control"  rows="3" placeholder="Have something to say?"></textarea>
+                        <textarea name="body" id="body" class="form-control"  rows="3" placeholder="Have something to say?"></textarea>
                     </div>
 
                     <button type="submit">Post</button>
                 </form>
+
+            @else
+                <p class="text-center">Please <a href="{{route('login')}}">Sign in </a> to participate in this discusion</p>
+            @endif
         </div>
+        <div class="col-md-4">
+            <div class="card">
+
+                <div class="card-body">
+                    <p>this posts was published by {{$post->created_at->diffForHumans()}} by
+                        <a href="#"> {{$post->creator->name}} </a>
+                        and currently Has {{ $post->replies_count}} {{ Illuminate\Support\Str::plural('comment',$post->replies_count)}}</p>
+                </div>
+
+            </div>
+        </div>
+
     </div>
-    @else
-        <p class="text-center">Please <a href="{{route('login')}}">Sign in </a> to participate in this discusion</p>
-    @endif
+
+
+
+
 </div>
 
 @endsection

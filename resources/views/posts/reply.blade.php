@@ -1,10 +1,20 @@
-<div class="card mt-2 ">
+<div class="card mt-5 ">
     <div class="card-header">
-        <a href="">  {{$reply->owner->name}} </a>
-        Said
-        <span class="float-right">
-        {{$reply->created_at->diffForHumans()}}... </span>
+        <div class="level">
+            <h5 class="flex">
+                <a href="#" >  {{$reply->owner->name}} </a>
+                Said
+                <span class="float-right">
+                {{$reply->created_at->diffForHumans()}}... </span>
+            </h5>
+            <div>
 
+                <form method="post" action="/replies/{{$reply->id}}/favorites">
+                    @csrf
+                    <button class="btn btn-secondary" {{$reply->isFavorited ? "disabled":'' }}> {{$reply->favorites()->count()}} {{\Illuminate\Support\Str::plural('favorite',$reply->favorites()->count())}} </button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <div class="card-body">
@@ -14,4 +24,5 @@
 
 
     </div>
+    {!! $replies->links()!!}
 </div>

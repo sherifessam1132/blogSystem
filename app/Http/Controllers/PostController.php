@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Channel;
 use App\Models\Post;
 use App\Models\User;
+use App\Filters\PostFilters;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -20,11 +21,16 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Channel $channel)
+    public function index(Channel $channel,PostFilters $filters)
     {
 
+        $posts=$this->getPosts($channel,$filters);
 
 
+        $posts=Post::filter($filters)->get();
+        if (\request()->wantsJson()){
+            return  $posts;
+        }
 
         return view('posts/index', ['posts' => $posts]);
     }
@@ -70,7 +76,10 @@ class PostController extends Controller
     public function show($channelId, Post $post)
     {
 
-        return view('posts/show', ['post' => $post]);
+        return view('posts/show', [
+            'post' => $post,
+            'replies'=>$post->replies()->paginate(20)
+        ]);
     }
 
     /**
@@ -106,19 +115,13 @@ class PostController extends Controller
     {
         //
     }
-    protected function getPosts(Channel $channel){
-        if ($channel->exists) {
-
-            $posts = $channel->posts()->latest()->get();
-        } else {
-
-            $posts = Post::latest()->get();
+    protected function getPosts(Channel $channel,PostFilters $filters){
+        $posts=Post::latest()->filter($filters);
+        if ($channel->exists){
+            $posts->where('channel_id',$channel->id);
         }
-        if(request()->has('by')){
-            $user=request('by');
-            $userId=User::query()->where('name','like','%'.  $user .'%')->firstOrFail();
-            $posts=Post::where('user_id',$userId->id)->latest()->get();
-        }
-        return $posts;
+
+        return $posts->get();
     }
+
 }
