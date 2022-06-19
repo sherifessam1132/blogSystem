@@ -116,10 +116,7 @@ class PostController extends Controller
 
         $this->authorize('update',$post);
         $post->delete();
-        if (\request()->wantsJson()){
 
-            return  response([],204);
-        }
         return redirect('/posts');
     }
     protected function getPosts(Channel $channel,PostFilters $filters){

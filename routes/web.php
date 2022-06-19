@@ -30,7 +30,7 @@ Route::delete('/posts/{channel}/{post:id}',[PostController::class,'destroy']);
 // Route::resource('posts',PostController::class);
 Route::post('posts/{channel}/{post}/replies',[RepliesController::class,'store'])->name('add.reply');
 
-Route::post('replies/{reply}/favorites',[FavoritesController::class,'store'])->name('add.reply');
+Route::post('replies/{reply}/favorites',[FavoritesController::class,'store']);
 
 
 Route::get('/profiles/{user}',[ProfileController::class,'show'])->name('profile');

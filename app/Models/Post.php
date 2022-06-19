@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\RecordActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory,RecordActivity;
     protected $guarded=[];
     protected $with=['channel','creator'];
     public static function boot()
@@ -20,7 +21,9 @@ class Post extends Model
         static::deleting(function ($post){
             $post->replies()->delete();
         });
+
     }
+
 
     public function ScopeFilter(Builder $query,$filters){
         return $filters->apply($query);
@@ -41,4 +44,5 @@ class Post extends Model
     public function channel(){
         return $this->belongsTo(Channel::class);
     }
+
 }
