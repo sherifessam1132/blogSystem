@@ -6,8 +6,21 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <a href="#">{{$post->creator->name}}</a> Posted:
-                    {{$post->title}}</div>
+                    <div class="level">
+                        <span class="flex">
+                            <a href="{{route('profile',$post->creator->name)}}">
+                                {{$post->creator->name}}</a> Posted:
+                                {{$post->title}}
+                        </span>
+                        @can('update',$post)
+                        <form action="/{{$post->path()}}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-link">Delete</button>
+                        </form>
+                        @endcan
+                    </div>
+                    </div>
 
                 <div class="card-body">
 

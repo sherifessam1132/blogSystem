@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Channel;
+use Illuminate\Filesystem\Cache;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 
@@ -27,7 +28,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        \view()->share('channels',Channel::all());
+//        \view()->share('channels',Channel::all());
+        \view()->composer('*',function ($view){
+           $channel=\Illuminate\Support\Facades\Cache::rememberForever('channels',function (){
+              return Channel::all();
+           });
+           $view->with('channels',$channel);
+        });
         Paginator::useBootstrap();
 
     }

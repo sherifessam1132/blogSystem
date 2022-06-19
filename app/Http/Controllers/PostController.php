@@ -69,11 +69,11 @@ class PostController extends Controller
 
     /**
      * Display the specified resource.
-     *
+     * @param  integer $channel
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show($channelId, Post $post)
+    public function show($channel, Post $post)
     {
 
         return view('posts/show', [
@@ -107,13 +107,20 @@ class PostController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
+     * @param integer $channel
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy($channel,Post $post)
     {
-        //
+
+        $this->authorize('update',$post);
+        $post->delete();
+        if (\request()->wantsJson()){
+
+            return  response([],204);
+        }
+        return redirect('/posts');
     }
     protected function getPosts(Channel $channel,PostFilters $filters){
         $posts=Post::latest()->filter($filters);

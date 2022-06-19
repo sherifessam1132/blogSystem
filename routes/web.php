@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RepliesController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,12 +26,14 @@ Route::get('/posts/create',[PostController::class,'create']);
 Route::get('/posts/{channel}',[PostController::class,'index']);
 
 Route::get('/posts/{channel}/{post:id}',[PostController::class,'show']);
+Route::delete('/posts/{channel}/{post:id}',[PostController::class,'destroy']);
 // Route::resource('posts',PostController::class);
 Route::post('posts/{channel}/{post}/replies',[RepliesController::class,'store'])->name('add.reply');
 
 Route::post('replies/{reply}/favorites',[FavoritesController::class,'store'])->name('add.reply');
 
 
+Route::get('/profiles/{user}',[ProfileController::class,'show'])->name('profile');
 
 Auth::routes();
 

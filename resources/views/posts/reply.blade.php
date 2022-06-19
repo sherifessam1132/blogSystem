@@ -2,7 +2,7 @@
     <div class="card-header">
         <div class="level">
             <h5 class="flex">
-                <a href="#" >  {{$reply->owner->name}} </a>
+                <a href="/profiles/{{$reply->owner->name}}" >  {{$reply->owner->name}} </a>
                 Said
                 <span class="float-right">
                 {{$reply->created_at->diffForHumans()}}... </span>
@@ -11,7 +11,7 @@
 
                 <form method="post" action="/replies/{{$reply->id}}/favorites">
                     @csrf
-                    <button class="btn btn-secondary" {{$reply->isFavorited ? "disabled":'' }}> {{$reply->favorites()->count()}} {{\Illuminate\Support\Str::plural('favorite',$reply->favorites()->count())}} </button>
+                    <button class="btn btn-secondary" {{$reply->isFavorited ? "disabled":'' }}> {{$reply->favorites_count}} {{\Illuminate\Support\Str::plural('favorite',$reply->favorites_count)}} </button>
                 </form>
             </div>
         </div>
