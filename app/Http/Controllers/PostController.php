@@ -64,7 +64,8 @@ class PostController extends Controller
             'body' => request('body'),
             'title' => request('title')
         ]);
-        return redirect($post->path());
+        return redirect($post->path())
+            ->with('flash','the post has been published');
     }
 
     /**

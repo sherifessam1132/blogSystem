@@ -19,6 +19,8 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+    @yield('css')
+
     <style>
         body{
             padding-bottom: 100px;
@@ -39,8 +41,10 @@
 
         <main class="py-4">
             @yield('content')
+            <flash message="{{ session('flash') }}"></flash>
         </main>
     </div>
+    @yield('scripts')
     <script src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>

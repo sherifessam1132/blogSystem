@@ -20,6 +20,11 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  * allows your team to easily build robust real-time web applications.
  */
 
+const vue=window.vue;
+window.events=vue;
+window.flash=function (message) {
+    vue.emit('flash',message)
+}
 // import Echo from 'laravel-echo';
 
 // window.Pusher = require('pusher-js');

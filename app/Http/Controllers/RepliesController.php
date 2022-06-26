@@ -19,8 +19,7 @@ class RepliesController extends Controller
         $post->addReply([
             'body'=>request('body'),
             'user_id'=>auth()->id(),
-            'channel_id'=>$channel->id
         ]);
-        return redirect()->back()->withSuccess('added sucessfully');
+        return redirect()->back()->with('flash','added sucessfully');
     }
 }

@@ -16,5 +16,11 @@ class Reply extends Model
     {
         return $this->belongsTo(User::class,'user_id');
     }
+    public function post(){
+        return $this->belongsTo(Post::class);
+    }
+    public function path(){
+        return $this->post->path() . `#reply-{$this->id}`;
+    }
 
 }

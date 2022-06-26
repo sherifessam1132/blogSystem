@@ -1,5 +1,18 @@
 @extends('layouts.app')
 
+@section('css')
+
+    <link href="{{asset('plugins/global/plugins.bundle.css?v=7.0.3')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('plugins/custom/prismjs/prismjs.bundle.css?v=7.0.3')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('css/style.bundle.css?v=7.0.3')}}" type="text/css" />
+    <!--end::Global Theme Styles-->
+    <!--begin::Layout Themes(used by all pages)-->
+    <link href="{{asset('css/themes/layout/header/base/light.css?v=7.0.3')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('css/themes/layout/header/menu/light.css?v=7.0.3')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('css/themes/layout/brand/dark.css?v=7.0.3')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('css/themes/layout/aside/dark.css?v=7.0.3')}}" rel="stylesheet" type="text/css" />
+
+@endsection
 @section('content')
     <div class="container">
         <div class="row">
@@ -11,37 +24,29 @@
                         <small>since  {{$profile->created_at->diffForHumans()}}</small>
                     </h1>
                 </div>
-                @foreach($posts as $post)
-                    <div class="card mt-4">
-                        <div class="card-header">
-                            <div class="level">
-                        <span class="flex">
-                              <a href="{{route('profile',$post->creator->name)}}">{{$post->creator->name}}</a> Posted:
-                              <a href="/{{$post->path()}}">{{$post->title}}</a>
-                        </span>
-                                <span>
-                            {{$post->created_at->diffForHumans()}}
-                        </span>
-                            </div>
-                        </div>
+                @foreach($activities as $data => $activity)
+                    <h3>{{$data}}</h3>
 
-                        <div class="card-body">
-
-
-                            <article>
-
-                                <div class="body">{{$post->body}}</div>
-                            </article>
-
-
-                        </div>
-
-                    </div>
+                    @foreach($activity as $record)
+                        @if(view()->exists("profiles.activities.{$record->type}"))
+                            @include("profiles.activities.{$record->type}",['activity'=>$record])
+                        @endif
+                    @endforeach
                 @endforeach
-                {!! $posts->links() !!}
+
             </div>
         </div>
 
 
     </div>
 @endsection
+@section('scripts')
+    <script src="{{asset('plugins/global/plugins.bundle.js?v=7.0.3')}}"></script>
+    <script src="{{asset('plugins/custom/prismjs/prismjs.bundle.js?v=7.0.3')}}"></script>
+    <script src="{{asset('js/scripts.bundle.js?v=7.0.3')}}"></script>
+    <!--end::Global Theme Bundle-->
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="{{asset('js/pages/custom/inbox/inbox.js?v=7.0.3')}}"></script>
+@endsection
+
+

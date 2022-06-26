@@ -19,7 +19,9 @@ class Post extends Model
             return $builder->withCount('replies');
         });
         static::deleting(function ($post){
-            $post->replies()->delete();
+            $post->replies->each(function ($reply){
+                $reply->delete();
+            });
         });
 
     }
@@ -44,5 +46,6 @@ class Post extends Model
     public function channel(){
         return $this->belongsTo(Channel::class);
     }
+
 
 }

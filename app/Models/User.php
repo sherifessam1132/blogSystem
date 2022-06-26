@@ -48,4 +48,7 @@ class User extends Authenticatable
     public function posts(){
         return $this->hasMany(Post::class,'user_id')->latest();
     }
+    public function activity(){
+        return $this->hasMany(Activity::class,'user_id');
+    }
 }

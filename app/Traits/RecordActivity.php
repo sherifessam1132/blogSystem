@@ -10,10 +10,14 @@
              static::$event(function ($model) use ($event) {
                  $model->recordActivity($event);
              });
+
          }
+         static::deleting(function ($model){
+             $model->activites()->delete();
+         });
      }
      public static function getRecordEvents(){
-         return ['created'];
+         return ['created','deleting'];
      }
      protected function recordActivity($event){
          $this->activites()->create(['user_id'=>auth()->user()->id,'type'=>$this->getActivityType($event)]);
