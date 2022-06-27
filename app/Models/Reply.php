@@ -11,6 +11,7 @@ class Reply extends Model
 {
     use HasFactory,Favoritable,RecordActivity;
     protected $guarded=[];
+    protected $appends=['favoritesCount','isFavorited'];
     protected $with=['owner','favorites'];
     public  function owner()
     {

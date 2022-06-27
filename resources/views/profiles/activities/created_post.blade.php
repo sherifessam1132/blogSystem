@@ -6,7 +6,7 @@
         <!--begin::Info-->
         <div class="flex-grow-1 mt-2 mr-2" data-toggle="view">
             <div>
-                <span class="font-weight-bolder font-size-lg mr-2">{{$activity->type}}</span>
+
                 <span class="text-muted">{{$activity->subject?$activity->subject->body:''}}</span>
             </div>
             <div class="mt-2">

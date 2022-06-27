@@ -10,10 +10,17 @@ trait Favoritable
         return $this->morphMany(Favorite::class,'favorite');
     }
     public function favorite($userId=null){
-        if ($favorite= $this->favorites()->where('user_id',auth()->id())->exists()){
-            $favorite->delete();
+        if (! $this->favorites()->where('user_id',auth()->id())->exists()) {
+               return $this->favorites()->create(['user_id' => $userId ?? auth()->id()]);
         }
-        return $this->favorites()->create(['user_id'=>$userId??auth()->id()]);
+    }
+    public function unFavorite($userId=null){
+        if ($this->favorites()->where(['user_id'=>$userId??auth()->id()])->exists()){
+            return $this->favorites()->get()->each->delete();
+//                ->each(function ($favorite){
+//                return $favorite->delete();
+//            });
+        }
     }
     public function getIsFavoritedAttribute(){
         return !! $this->favorites->where('user_id',auth()->id())->count();

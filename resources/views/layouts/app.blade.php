@@ -18,7 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     @yield('css')
 
     <style>
@@ -32,7 +32,18 @@
         .flex{
             flex: 1;
         }
+        .mr-2{
+            margin-right: 1em;
+        }
     </style>
+    <script>
+        window.App={!!json_encode([
+                         'csrfToken'=>csrf_token(),
+                         'user'=>\Illuminate\Support\Facades\Auth::user(),
+                         'signedIn'=>\Illuminate\Support\Facades\Auth::check()
+                    ])
+            !!}
+    </script>
 </head>
 <body style="padding-bottom:100px;">
     <div id="app">

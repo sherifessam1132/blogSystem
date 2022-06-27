@@ -1,5 +1,5 @@
 window._ = require('lodash');
-
+import Vue from 'vue'
 try {
     require('bootstrap');
 } catch (e) {}
@@ -11,8 +11,14 @@ try {
  */
 
 window.axios = require('axios');
+// let user_token = $('meta[name="user-token"]').attr('content');
+// let user_token=window.App.csrfToken;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+Vue.prototype.authorize=function(handler){
+    return handler(window.App.user)
+}
+// window.axios.defaults.headers.common['Authorization'] = `Bearer ${user_token}`;
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -20,11 +26,10 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  * allows your team to easily build robust real-time web applications.
  */
 
-const vue=window.vue;
-window.events=vue;
-window.flash=function (message) {
-    vue.emit('flash',message)
-}
+
+window.flash = function (message, level = 'success') {
+    window.events.$emit('flash', { message, level });
+};
 // import Echo from 'laravel-echo';
 
 // window.Pusher = require('pusher-js');

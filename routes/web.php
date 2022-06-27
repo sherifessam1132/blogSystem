@@ -31,6 +31,10 @@ Route::delete('/posts/{channel}/{post:id}',[PostController::class,'destroy']);
 Route::post('posts/{channel}/{post}/replies',[RepliesController::class,'store'])->name('add.reply');
 
 Route::post('replies/{reply}/favorites',[FavoritesController::class,'store']);
+Route::delete('replies/{reply}/favorites',[FavoritesController::class,'destroy']);
+
+Route::delete('replies/{reply}',[RepliesController::class,'destroy']);
+Route::put('replies/{reply}',[RepliesController::class,'update']);
 
 
 Route::get('/profiles/{user}',[ProfileController::class,'show'])->name('profile');
