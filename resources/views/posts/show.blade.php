@@ -35,26 +35,13 @@
                             </div>
 
                         </div>
-                        <replies :data="{{$post->replies}}" @removed="repliesCount --"></replies>
+                        <replies
+                                 @added="repliesCount ++"
+                                 @removed="repliesCount --"></replies>
 
 
 
-                        @if (auth()->check())
 
-
-
-                            <form method="post" action="{{route('add.reply',[$post->channel->slug,$post->id])}}">
-                                @csrf
-                                <div class="form-group mt-5">
-                                    <textarea name="body" id="body" class="form-control"  rows="3" placeholder="Have something to say?"></textarea>
-                                </div>
-
-                                <button type="submit">Post</button>
-                            </form>
-
-                        @else
-                            <p class="text-center">Please <a href="{{route('login')}}">Sign in </a> to participate in this discusion</p>
-                        @endif
                     </div>
                     <div class="col-md-4">
                         <div class="card">
@@ -63,6 +50,11 @@
                                 <p>this posts was published by {{$post->created_at->diffForHumans()}} by
                                     <a href="#"> {{$post->creator->name}} </a>
                                     and currently Has <span v-text="repliesCount"></span> Comments</p>
+
+                                <p>
+                                    <subscribe-button :active="{{ json_encode($post->isSubscribed)    }}"></subscribe-button>
+
+                                </p>
                             </div>
 
                         </div>

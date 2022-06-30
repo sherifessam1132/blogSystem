@@ -2,6 +2,7 @@
  namespace App\Traits;
 
  use App\Models\Activity;
+ use App\Models\User;
 
  trait RecordActivity
  {
@@ -20,7 +21,7 @@
          return ['created','deleting'];
      }
      protected function recordActivity($event){
-         $this->activites()->create(['user_id'=>auth()->user()->id,'type'=>$this->getActivityType($event)]);
+         $this->activites()->create(['user_id'=>optional(auth()->user())->id ?: User::get()->random()->id,'type'=>$this->getActivityType($event)]);
 
      }
      protected function getActivityType($event){

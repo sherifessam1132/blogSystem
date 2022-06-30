@@ -7,8 +7,8 @@
                         <h5 class="flex">
                             <a :href="'/profiles/' +attributes.owner.name" v-text="attributes.owner.name">   </a>
                             Said
-                            <span class="float-right">
-                        {{ attributes.created_at}}
+                            <span class="float-right" v-text="ago">
+
                                 ... </span>
                         </h5>
 <!--                        @if(auth()->check())-->
@@ -43,7 +43,7 @@
 
 
                 </div>
-                <div v-else>sa,.,ds,d,m</div>
+
 <!--                @endcan-->
 <!--                {!! $replies->links()!!}-->
             </div>
@@ -52,21 +52,26 @@
 </template>
 <script>
 import favorite from "./Favorite";
+import moment from "moment";
 export default {
     name: "reply",
+
     components:{
         favorite
     },
     props:['attributes'],
     computed:{
+        ago(){
+          return moment(this.attributes.created_at).fromNow() + " ...."
+        },
         signIn(){
             return window.App.signedIn
         },
         canUpdates(){
-              this.authorize(user=> {
-                    console.log(this.attributes.user_id==user.id)
-               return   this.attributes.user_id == user.id
-              })
+            return this.authorize(user=> {
+
+                return   this.attributes.user_id == user.id
+            })
 
         }
     },
@@ -76,6 +81,7 @@ export default {
             id:this.attributes.id,
             body:this.attributes.body,
             showReply: true,
+            testAction:false
         }
     },
     methods:{
@@ -88,20 +94,21 @@ export default {
         },
         destroy(){
             axios.delete('/replies/' + this.attributes.id)
-            .then(response => {
+                .then(response => {
 
-                this.$emit('deleted',this.id)
-                flash(response.data.message)
+                    this.$emit('deleted',this.id)
+                    flash(response.data.message)
 
-            })
-            .catch(error => {
-                console.log(error)
-            })
+                })
+                .catch(error => {
+                    console.log(error)
+                })
 
 
         }
     }
 }
+
 </script>
 
 <style >

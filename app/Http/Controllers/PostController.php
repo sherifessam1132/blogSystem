@@ -24,7 +24,7 @@ class PostController extends Controller
     public function index(Channel $channel,PostFilters $filters)
     {
 
-        $posts=$this->getPosts($channel,$filters);
+//        $posts=$this->getPosts($channel,$filters);
 
 
         $posts=Post::filter($filters)->get();
@@ -77,9 +77,10 @@ class PostController extends Controller
     public function show($channel, Post $post)
     {
 
+
         return view('posts/show', [
             'post' => $post,
-            'replies'=>$post->replies()->paginate(20)
+
         ]);
     }
 

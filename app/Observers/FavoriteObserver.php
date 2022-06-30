@@ -36,7 +36,7 @@ class FavoriteObserver
      */
     public function deleted(Favorite $favorite)
     {
-       ;
+
     }
 
     /**

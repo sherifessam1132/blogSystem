@@ -19,6 +19,7 @@
                         <li><a href="/posts" class="nav-link"> All Posts</a></li>
                         <li><a href="/posts?by={{auth()->user()?auth()->user()->name:''}}" class="nav-link"> My Posts</a></li>
                         <li><a href="/posts?popular=1" class="nav-link"> Popular Posts</a></li>
+                        <li><a href="/posts?unanswered=1" class="nav-link"> unanswered Posts</a></li>
 
                     </ul>
                 </li>
@@ -53,6 +54,7 @@
                         </li>
                     @endif
                 @else
+                    <user-notifications></user-notifications>
                     <li class="nav-item dropdown">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ Auth::user()->name }}

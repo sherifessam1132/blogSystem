@@ -17,9 +17,7 @@ trait Favoritable
     public function unFavorite($userId=null){
         if ($this->favorites()->where(['user_id'=>$userId??auth()->id()])->exists()){
             return $this->favorites()->get()->each->delete();
-//                ->each(function ($favorite){
-//                return $favorite->delete();
-//            });
+
         }
     }
     public function getIsFavoritedAttribute(){
