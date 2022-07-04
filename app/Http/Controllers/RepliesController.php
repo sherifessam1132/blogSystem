@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Inspections\Spam;
 use App\Models\Channel;
 use App\Models\Post;
-
 use App\Models\Reply;
-use Illuminate\Http\Request;
 
 class RepliesController extends Controller
 {
@@ -17,10 +16,11 @@ class RepliesController extends Controller
     {
         return $post->replies()->paginate(20);
     }
-    public function store(Channel $channel,Post $post,Request $request){
+    public function store(Channel $channel,Post $post,Spam $spam){
         $this->validate(request(),[
             'body'=>['required']
         ]);
+        $spam->detect(request('body'));
        $reply= $post->addReply([
             'body'=>request('body'),
             'user_id'=>auth()->id(),

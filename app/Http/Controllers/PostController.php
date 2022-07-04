@@ -6,6 +6,7 @@ use App\Models\Channel;
 use App\Models\Post;
 use App\Models\User;
 use App\Filters\PostFilters;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -77,7 +78,9 @@ class PostController extends Controller
     public function show($channel, Post $post)
     {
 
-
+        if (auth()->check()){
+            auth()->user()->read($post);
+        }
         return view('posts/show', [
             'post' => $post,
 

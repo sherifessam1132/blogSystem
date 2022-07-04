@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\PostHasNewReply;
+use App\Listeners\NotifyPostSubscribers;
 use App\Models\Favorite;
 use App\Models\Reply;
 use App\Observers\FavoriteObserver;
@@ -22,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        PostHasNewReply::class=>[
+            NotifyPostSubscribers::class
+        ]
 
     ];
 

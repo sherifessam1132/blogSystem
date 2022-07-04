@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -50,5 +51,16 @@ class User extends Authenticatable
     }
     public function activity(){
         return $this->hasMany(Activity::class,'user_id');
+    }
+    public function read($post)
+    {
+        $key= $this->visitedPostCacheKey($post);
+        cache()->forever($key,Carbon::now());
+    }
+    public function visitedPostCacheKey($post)
+    {
+
+        return sprintf('users.%s.visted.%s',$this->id,$post->id);
+
     }
 }

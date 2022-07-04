@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use App\Notifications\PostWasUpdated;
+use App\Events\PostHasNewReply;
+use App\Inspections\Spam;
 use App\Traits\RecordActivity;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 
 class Post extends Model
 {
@@ -42,15 +43,13 @@ class Post extends Model
      *
      *@return $reply
      */
-    public function addReply($request)
+    public function addReply($reply)
     {
-        $reply= $this->replies()->create($request);
+        (new Spam)->detect($reply);
+        $reply= $this->replies()->create($reply);
 
-        $this->subscriptions->filter(function ($sub) use ($reply){
-            return $sub->user_id != $reply->user_id;
-        })->each(function ($sub) use ($reply){
-           $sub->user->notify(new PostWasUpdated($this,$reply));
-        });
+        event(new PostHasNewReply($this,$reply));
+
 
         return $reply;
     }
@@ -65,6 +64,11 @@ class Post extends Model
     }
     public function getIsSubscribedAttribute(){
         return  $this->subscriptions()->where('user_id',auth()->id())->exists();
+    }
+    public function hasUpdatesFor($user){
+
+        $key=sprintf('users.%s.visted.%s',auth()->id(),$this->id);
+        return $this->updated_at > cache($key);
     }
     public function replies(){
         return $this->hasMany(Reply::class);

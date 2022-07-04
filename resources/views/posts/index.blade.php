@@ -10,7 +10,17 @@
                 <div class="card-header">
                     <div class="level">
                     <h4 class="flex">
-                    <a href="/{{$post->path()}}">{{$post->title}}</a></h4>
+                    <a href="/{{$post->path()}}">
+                        @if(auth()->check() && $post->hasUpdatesFor(auth()->id()))
+                            <strong>
+
+                                {{$post->title}}
+                            </strong>
+                        @else
+                            {{$post->title}}
+                        @endif
+                    </a>
+                    </h4>
                         <a href="{{$post->path()}}">{{$post->replies_count}} {{\Illuminate\Support\Str::plural('comment',$post->replies_count)}}</a>
                     </div>
                 </div>

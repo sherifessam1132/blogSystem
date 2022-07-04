@@ -21,6 +21,7 @@ class PostWasUpdated extends Notification
     {
         $this->post=$post;
         $this->reply=$reply;
+
     }
 
     /**
@@ -56,6 +57,7 @@ class PostWasUpdated extends Notification
      */
     public function toArray($notifiable)
     {
+
         return [
             'message'=> $this->reply->owner->name . ' replied to ' . $this->post->title,
             'link'=>$this->reply->path()

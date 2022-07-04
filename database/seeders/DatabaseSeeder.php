@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
     {
 //         \App\Models\User::factory(10)->create();
         // Post::factory(50)->create();
-//        Reply::factory(50)->create();
+        Reply::factory(50)->create();
 //        \Illuminate\Notifications\Notification::fa
     }
 }
