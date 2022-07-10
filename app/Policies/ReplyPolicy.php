@@ -37,11 +37,14 @@ class ReplyPolicy
      * Determine whether the user can create models.
      *
      * @param  \App\Models\User  $user
+     * @param  \App\Models\Reply  $reply
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user,Reply $reply)
     {
-        //
+        $lastReply=  $user->lastReply;
+        if (!$lastReply) return true;
+        return ! $lastReply->wasJustPublished();
     }
 
     /**

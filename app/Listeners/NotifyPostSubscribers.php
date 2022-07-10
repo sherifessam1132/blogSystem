@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\PostHasNewReply;
+use App\Events\PostReceivedNewReply;
 use App\Notifications\PostWasUpdated;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -25,9 +26,9 @@ class NotifyPostSubscribers
      * @param  object  $event
      * @return void
      */
-    public function handle(PostHasNewReply $event)
+    public function handle(PostReceivedNewReply  $event)
     {
-        $event->post->subscriptions
+        $event->reply->post->subscriptions
             ->where('user_id','!=',$event->reply->user_id)
 
             ->each(function ($sub) use ($event){

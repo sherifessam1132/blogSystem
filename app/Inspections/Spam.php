@@ -13,7 +13,7 @@ class Spam
     {
         foreach ($this->inspections as $inspection){
 
-            app($inspection)->detect($body);
+            resolve($inspection)->detect($body);
         }
 
         return false;

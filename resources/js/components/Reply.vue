@@ -22,14 +22,16 @@
 
                 <div  class="card-body">
                     <div v-if="editing">
+                        <form @submit="update">
                         <div class="form-group">
-                            <textarea name="body" class="form-control" v-model="body"></textarea>
+                            <textarea name="body" class="form-control" v-model="body" required></textarea>
                         </div>
-                        <button class="btn btn-xs btn-primary" @click="update()">update</button>
-                        <button class="btn btn-xs btn-link" @click="editing=false">cancel</button>
+                        <button class="btn btn-xs btn-primary" >update</button>
+                        <button class="btn btn-xs btn-link" @click="editing=false" type="button">cancel</button>
+                        </form>
                     </div>
 
-                    <div v-if="showReply && !editing" v-text="body"> </div>
+                    <div v-if="showReply && !editing" v-html="body"> </div>
                 </div>
 
 
@@ -89,6 +91,10 @@ export default {
             axios.put('/replies/' + this.attributes.id,{
                 body:this.body
             })
+            .catch((error)=>
+
+               flash(error.response.error,'danger')
+            )
             this.editing=false
             flash('updated successfully')
         },

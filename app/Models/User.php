@@ -63,4 +63,7 @@ class User extends Authenticatable
         return sprintf('users.%s.visted.%s',$this->id,$post->id);
 
     }
+    public function lastReply(){
+        return $this->hasOne(Reply::class,'user_id')->latest();
+    }
 }

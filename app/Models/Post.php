@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Events\PostHasNewReply;
+use App\Events\PostReceivedNewReply;
+use App\Events\PostRevievedNewReply;
 use App\Inspections\Spam;
 use App\Traits\RecordActivity;
 use Illuminate\Database\Eloquent\Builder;
@@ -45,10 +47,10 @@ class Post extends Model
      */
     public function addReply($reply)
     {
-        (new Spam)->detect($reply);
+//        (new Spam)->detect($reply);
         $reply= $this->replies()->create($reply);
-
-        event(new PostHasNewReply($this,$reply));
+        event(new PostReceivedNewReply($reply));
+//        event(new PostHasNewReply($this,$reply));
 
 
         return $reply;

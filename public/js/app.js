@@ -5373,6 +5373,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       body: this.message,
+      level: 'success',
       show: false
     };
   },
@@ -5385,12 +5386,15 @@ __webpack_require__.r(__webpack_exports__);
     }
 
     window.events.$on('flash', function (message) {
-      _this.flash(message);
+      'flash', function (data) {
+        return _this.flash(data);
+      };
     });
   },
   methods: {
-    flash: function flash(message) {
-      this.body = message;
+    flash: function flash(data) {
+      this.body = data.message;
+      this.level = data.level;
       this.show = true;
       this.hide();
     },
@@ -5464,7 +5468,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.$emit('created', response.data);
       })["catch"](function (error) {
-        console.log(error);
+        flash(error.response.data, 'danger');
       });
     }
   }
@@ -5671,6 +5675,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -5707,6 +5713,8 @@ __webpack_require__.r(__webpack_exports__);
     update: function update() {
       axios.put('/replies/' + this.attributes.id, {
         body: this.body
+      })["catch"](function (error) {
+        return flash(error.response.error, 'danger');
       });
       this.editing = false;
       flash('updated successfully');
@@ -10995,7 +11003,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.alert-flash {\r\n    position: fixed;\r\n    right:0;\r\n    bottom: 0;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.alert-flash {\n    position: fixed;\n    right:0;\n    bottom: 0;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -11019,7 +11027,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.fade-enter,\r\n.fade-leave-to {\r\n    opacity: 0;\r\n    transform: scale(0);\n}\n.fade-enter-active,\r\n.fade-leave-active {\r\n    transition: all 300ms ease-in-out;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.fade-enter,\n.fade-leave-to {\n    opacity: 0;\n    transform: scale(0);\n}\n.fade-enter-active,\n.fade-leave-active {\n    transition: all 300ms ease-in-out;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -51164,22 +51172,15 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      directives: [
-        {
-          name: "show",
-          rawName: "v-show",
-          value: _vm.show,
-          expression: "show",
-        },
-      ],
-      staticClass: "alert alert-primary alert-flash",
-      attrs: { role: "alert" },
-    },
-    [_c("strong", [_vm._v("Success")]), _vm._v(" " + _vm._s(_vm.body) + "\n")]
-  )
+  return _c("div", {
+    directives: [
+      { name: "show", rawName: "v-show", value: _vm.show, expression: "show" },
+    ],
+    staticClass: "alert alert-flash",
+    class: "alert-" + _vm.level,
+    attrs: { role: "alert" },
+    domProps: { textContent: _vm._s(_vm.body) },
+  })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -51455,60 +51456,54 @@ var render = function () {
             _c("div", { staticClass: "card-body" }, [
               _vm.editing
                 ? _c("div", [
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("textarea", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.body,
-                            expression: "body",
+                    _c("form", { on: { submit: _vm.update } }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("textarea", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.body,
+                              expression: "body",
+                            },
+                          ],
+                          staticClass: "form-control",
+                          attrs: { name: "body", required: "" },
+                          domProps: { value: _vm.body },
+                          on: {
+                            input: function ($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.body = $event.target.value
+                            },
                           },
-                        ],
-                        staticClass: "form-control",
-                        attrs: { name: "body" },
-                        domProps: { value: _vm.body },
-                        on: {
-                          input: function ($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.body = $event.target.value
+                        }),
+                      ]),
+                      _vm._v(" "),
+                      _c("button", { staticClass: "btn btn-xs btn-primary" }, [
+                        _vm._v("update"),
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-xs btn-link",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function ($event) {
+                              _vm.editing = false
+                            },
                           },
                         },
-                      }),
+                        [_vm._v("cancel")]
+                      ),
                     ]),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-xs btn-primary",
-                        on: {
-                          click: function ($event) {
-                            return _vm.update()
-                          },
-                        },
-                      },
-                      [_vm._v("update")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-xs btn-link",
-                        on: {
-                          click: function ($event) {
-                            _vm.editing = false
-                          },
-                        },
-                      },
-                      [_vm._v("cancel")]
-                    ),
                   ])
                 : _vm._e(),
               _vm._v(" "),
               _vm.showReply && !_vm.editing
-                ? _c("div", { domProps: { textContent: _vm._s(_vm.body) } })
+                ? _c("div", { domProps: { innerHTML: _vm._s(_vm.body) } })
                 : _vm._e(),
             ]),
             _vm._v(" "),

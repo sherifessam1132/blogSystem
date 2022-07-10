@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreatePostRequest;
 use App\Inspections\Spam;
 use App\Models\Channel;
 use App\Models\Post;
 use App\Models\Reply;
+use App\Models\User;
+use App\Notifications\YouWereMentioned;
 
 class RepliesController extends Controller
 {
@@ -16,20 +19,18 @@ class RepliesController extends Controller
     {
         return $post->replies()->paginate(20);
     }
-    public function store(Channel $channel,Post $post,Spam $spam){
-        $this->validate(request(),[
-            'body'=>['required']
-        ]);
-        $spam->detect(request('body'));
-       $reply= $post->addReply([
-            'body'=>request('body'),
-            'user_id'=>auth()->id(),
-        ]);
-        if (request()->expectsJson()){
+    public function store(Channel $channel, Post $post, createPostRequest $request){
 
-            return $reply->load('owner');
-        }
-        return redirect()->back()->with('flash','added sucessfully');
+
+
+      return $post->addReply([
+                'body'=>request('body'),
+                'user_id'=>auth()->id(),
+            ])->load('owner');
+
+
+
+
     }
     public function destroy(Reply $reply){
 
@@ -40,11 +41,12 @@ class RepliesController extends Controller
            return response(['message'=>'Reply Deleted']);
        }
     }
-    public function update(Reply $reply){
+    public function update(Reply $reply,Spam $spam){
         $this->validate(request(),[
             'body'=>['required','string'],
         ]);
         $this->authorize('update',$reply);
+        $spam->detect(request('body'));
         $reply->update(['body'=>\request('body')]);
 
     }
