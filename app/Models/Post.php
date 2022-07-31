@@ -34,7 +34,7 @@ class Post extends Model
     }
 
     public function path(){
-        return "posts/{$this->channel->slug}/{$this->id}";
+        return "/posts/{$this->channel->slug}/{$this->id}";
     }
     /*
      *add reply to post

@@ -29,11 +29,16 @@ class NotifyMentionedUser
      */
     public function handle(PostReceivedNewReply $event)
     {
+
         preg_match_all('/@([\w\-]+)/',$event->reply->body,$matches);
+
         $names=$matches[1];
         foreach ($names as $name){
-            $user=User::whereName($name)->first();
+
+            $user=User::where('name','like','%'.$name.'%')->first();
+
             if ($user){
+
                 $user->notify(new YouWereMentioned($event->reply));
             }
         }

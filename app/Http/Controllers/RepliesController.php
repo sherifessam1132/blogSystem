@@ -23,12 +23,13 @@ class RepliesController extends Controller
 
 
 
-      return $post->addReply([
+      $reply= $post->addReply([
                 'body'=>request('body'),
                 'user_id'=>auth()->id(),
-            ])->load('owner');
+            ]);
 
 
+        return $reply->load('owner');
 
 
     }
