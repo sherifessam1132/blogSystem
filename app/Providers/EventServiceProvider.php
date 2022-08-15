@@ -30,10 +30,12 @@ class EventServiceProvider extends ServiceProvider
 //        PostHasNewReply::class=>[
 //            NotifyPostSubscribers::class
 //        ],
-        PostReceivedNewReply::class,
+        PostReceivedNewReply::class=>[
             NotifyMentionedUser::class,
             NotifyPostSubscribers::class
 
+        ]
+            
 
 
     ];
