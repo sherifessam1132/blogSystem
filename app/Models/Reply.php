@@ -13,13 +13,13 @@ class Reply extends Model
     use HasFactory,Favoritable,RecordActivity;
     protected $guarded=[];
     protected $appends=['favoritesCount','isFavorited'];
-    protected $with=['owner','favorites'];
+    protected $with=['owner','favorites','post'];
     public  function owner()
     {
         return $this->belongsTo(User::class,'user_id');
     }
     public function post(){
-        return $this->belongsTo(Post::class);
+        return $this->belongsTo(Post::class,'post_id');
     }
     public function path(){
         return $this->post->path() . `#reply-{$this->id}`;

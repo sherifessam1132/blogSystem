@@ -21,6 +21,7 @@ class YouWereMentioned extends Notification
      */
     public function __construct(Reply $reply)
     {
+
         $this->reply=$reply;
     }
 
@@ -59,7 +60,7 @@ class YouWereMentioned extends Notification
     {
         return [
             'message'=> $this->reply->owner->name  .'mentioned you in ' . $this->reply->post->title,
-            'link'=>$this->reply->path()
+//            'link'=>$this->reply->path()
         ];
     }
 }

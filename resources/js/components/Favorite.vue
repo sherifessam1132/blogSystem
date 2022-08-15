@@ -7,6 +7,7 @@
            <span v-text="favorites_count"></span>
 
 <!--         {{$reply->favorites_count}}-->
+
        </button>
 
 
