@@ -8,6 +8,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="level">
+                                    <img src="{{$post->creator->avatar()}}" class="mr-1" alt="avatar" width="25" height="25">
                                     <span class="flex">
                                         <a href="{{route('profile',$post->creator->name)}}">
                                             {{$post->creator->name}}</a> Posted:

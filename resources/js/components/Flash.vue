@@ -24,13 +24,14 @@
             }
             window.events.$on('flash',message=>{
 
-            'flash',  data=>  this.flash(data)
+            'flash',
+                data=>  this.flash(data)
             })
         },
         methods:{
             flash(data){
-                this.body=data.message
-                this.level=data.level
+                this.body=this.message
+                this.level=data.level?data.level:'danger'
                 this.show=true
                 this.hide();
             },

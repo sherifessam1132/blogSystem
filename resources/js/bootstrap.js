@@ -16,7 +16,8 @@ window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 Vue.prototype.authorize=function(handler){
-    return handler(window.App.user)
+    let user=window.App.user;
+    return user? handler(user):false;
 }
 // window.axios.defaults.headers.common['Authorization'] = `Bearer ${user_token}`;
 

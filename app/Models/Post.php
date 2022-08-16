@@ -4,13 +4,15 @@ namespace App\Models;
 
 use App\Events\PostReceivedNewReply;
 use App\Traits\RecordActivity;
+use App\Traits\Visits;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Redis;
 
 class Post extends Model
 {
-    use HasFactory,RecordActivity;
+    use HasFactory,RecordActivity,Visits;
     protected $guarded=[];
     protected $with=['channel','creator'];
     protected $appends=['isSubscribed'];
@@ -34,7 +36,7 @@ class Post extends Model
     }
 
     public function path(){
-        return "/posts/{$this->channel->slug}/{$this->id}";
+        return "posts/{$this->channel->slug}/{$this->id}";
     }
     /*
      *add reply to post
@@ -68,6 +70,7 @@ class Post extends Model
         $key=sprintf('users.%s.visted.%s',auth()->id(),$this->id);
         return $this->updated_at > cache($key);
     }
+
     public function replies(){
         return $this->hasMany(Reply::class);
     }

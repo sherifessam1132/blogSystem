@@ -9,6 +9,7 @@
             <div class="card mt-4">
                 <div class="card-header">
                     <div class="level">
+
                     <h4 class="flex">
                     <a href="/{{$post->path()}}">
                         @if(auth()->check() && $post->hasUpdatesFor(auth()->id()))
@@ -34,11 +35,28 @@
 
 
                 </div>
+                <div class="card-footer">
+                    {{$post->visits()->count()}} visits
+                </div>
             </div>
             @empty
                 <p>there are no posts</p>
             @endforelse
 
+        </div>
+        <div class="col-md-4 ">
+            <div class="card card-default mt-4">
+                <div class="card-header">
+                    trending posts
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                    @foreach($trending as $post)
+                      <li class="list-group-item">  <a href="{{url($post['path'])}}">{{$post['title']}}</a></li>
+                    @endforeach
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>

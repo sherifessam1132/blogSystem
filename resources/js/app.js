@@ -25,6 +25,7 @@ Vue.component('flash', require('./components/Flash.vue').default);
 Vue.component('paginator', require('./components/Paginator.vue').default);
 Vue.component('userNotifications', require('./components/UserNotifications.vue').default);
 Vue.component('post-view',require('./Pages/post').default);
+Vue.component('avatar-form',require('./components/AvatarForm.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use App\Events\PostHasNewReply;
-use App\Events\PostReceivedNewReply;
 
+use App\Events\PostReceivedNewReply;
 use App\Listeners\NotifyMentionedUser;
 use App\Listeners\NotifyPostSubscribers;
+use App\Listeners\SendEmailConformationRequest;
 use App\Models\Favorite;
 use App\Models\Reply;
 use App\Observers\FavoriteObserver;
@@ -14,7 +14,6 @@ use App\Observers\ReplyObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -26,6 +25,7 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+            SendEmailConformationRequest::class
         ],
 //        PostHasNewReply::class=>[
 //            NotifyPostSubscribers::class
