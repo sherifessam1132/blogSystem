@@ -27,15 +27,16 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
             SendEmailConformationRequest::class
         ],
-//        PostHasNewReply::class=>[
-//            NotifyPostSubscribers::class
-//        ],
+
+
         PostReceivedNewReply::class =>[
             NotifyMentionedUser::class,
             NotifyPostSubscribers::class
             ],
 
 
+        
+            
 
 
     ];
