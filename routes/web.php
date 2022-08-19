@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostSubscriptionController;
@@ -23,7 +24,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/posts',[PostController::class,'index']);
-Route::post('/posts',[PostController::class,'store'])->name('posts.store');
+Route::post('/posts',[PostController::class,'store'])->name('posts.store')->middleware('must-be-confirmed');
 Route::get('/posts/create',[PostController::class,'create']);
 Route::get('/posts/{channel}',[PostController::class,'index']);
 
@@ -48,6 +49,11 @@ Route::get('/profiles/{user}',[ProfileController::class,'show'])->name('profile'
 //notifications
 Route::get('/profiles/{user}/notifications',[UserNotificationsController::class,'index']);
 Route::delete('/profiles/{user}/notifications/{notification}',[UserNotificationsController::class,'destroy']);
+//confirmation
+Route::get('/register/confirm',[\App\Http\Controllers\api\RegisterConfirmationController::class,'index'])->name('register.confirm');
+// avatar
+Route::get('api/users',[UserController::class,'index']);
+Route::post('api/users/{user}/avatar',[UserController::class,'store'])->middleware('auth')->name('avatar');
 
 Auth::routes();
 

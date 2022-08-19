@@ -6,6 +6,8 @@ use App\Models\Channel;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
+
 
 class PostFactory extends Factory
 {
@@ -17,11 +19,13 @@ class PostFactory extends Factory
      */
     public function definition()
     {
+        $title=$this->faker->sentence;
         return [
             'user_id'=>User::factory(),
             'channel_id'=>Channel::factory(),
-            'title'=>$this->faker->sentence,
-            'body'=>$this->faker->paragraph
+            'title'=>$title,
+            'body'=>$this->faker->paragraph,
+            'slug'=>Str::slug($title)
         ];
     }
 }

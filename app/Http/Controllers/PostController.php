@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\Trending;
 use App\Models\Channel;
 use App\Models\Post;
 use App\Models\User;
 use App\Filters\PostFilters;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class PostController extends Controller
@@ -22,7 +25,7 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Channel $channel,PostFilters $filters)
+    public function index(Channel $channel,PostFilters $filters,Trending $trending)
     {
 
 //        $posts=$this->getPosts($channel,$filters);
@@ -32,8 +35,13 @@ class PostController extends Controller
         if (\request()->wantsJson()){
             return  $posts;
         }
+        $trending=$trending->get();
 
-        return view('posts/index', ['posts' => $posts]);
+//        $trending=collect(Redis::zrevrange('trending_posts',0,-1))->map(function ($post){
+//            return json_decode($post,true);
+//        });
+
+        return view('posts/index', ['posts' => $posts,'trending'=> $trending]);
     }
 
     /**
@@ -54,16 +62,19 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+
         $this->validate(request(), [
             'title' => ['required', 'string'],
             'body' => ['required', 'string'],
             'channel_id' => ['required', Rule::exists('channels', 'id')]
         ]);
+
         $post = Post::create([
             'user_id' => auth()->id(),
             'channel_id' => request('channel_id'),
             'body' => request('body'),
-            'title' => request('title')
+            'title' => request('title'),
+            'slug'=>Str::slug(\request('title'))
         ]);
         return redirect($post->path())
             ->with('flash','the post has been published');
@@ -75,12 +86,15 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show($channel, Post $post)
+    public function show($channel, Post $post,Trending $trending)
     {
 
         if (auth()->check()){
             auth()->user()->read($post);
         }
+        $trending->push($post);
+        $post->visits()->record();
+
         return view('posts/show', [
             'post' => $post,
 

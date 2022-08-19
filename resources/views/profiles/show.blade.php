@@ -18,11 +18,7 @@
         <div class="row">
             <div class="col-md-8 offset-2">
                 <div class="card-header">
-                    <h1>
-
-                        {{$profile ->name}}
-                        <small>since  {{$profile->created_at->diffForHumans()}}</small>
-                    </h1>
+                    <avatar-form :profile="{{$profile}}"/>
                 </div>
                 @foreach($activities as $data => $activity)
                     <h3>{{$data}}</h3>
