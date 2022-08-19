@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Events\PostHasNewReply;
 use App\Events\PostReceivedNewReply;
 
 use App\Listeners\NotifyMentionedUser;
